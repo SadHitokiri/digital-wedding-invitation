@@ -9,7 +9,6 @@ export default function SmoothProvider({ children }: { children: ReactNode }) {
       duration: 1.2,
       lerp: 0.08,
       smoothWheel: true,
-      smoothTouch: true,
       gestureOrientation: "vertical",
     })
 
