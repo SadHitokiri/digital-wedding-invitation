@@ -5,7 +5,30 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Location() {
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 60]); // мягче параллакс
+  const y = useTransform(scrollY, [0, 500], [0, 60]); 
+
+  const addToCalendar = () => {
+  const start = "20260815T130000Z";
+  const end = "20260815T210000Z";
+
+  const title = encodeURIComponent("Свадьба Вероники и Дмитрия");
+  const details = encodeURIComponent(
+    "Будем рады видеть вас на нашей свадьбе!",
+  );
+  const location = encodeURIComponent("Alberta muiža");
+
+  const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
+
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  if (isIOS) {
+    // iPhone → fallback на .ics
+    window.location.href = "/wedding.ics";
+  } else {
+    // Android / Desktop → открываем Google Calendar
+    window.open(googleUrl, "_blank");
+  }
+};
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -77,7 +100,7 @@ export default function Location() {
           </a>
 
           <a
-            href="/wedding.ics"
+            onClick={addToCalendar}
             download
             className="px-7 py-3 rounded-full border border-white text-sm md:text-base hover:bg-white hover:text-black transition"
           >
