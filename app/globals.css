@@ -16,6 +16,7 @@
 }
 
 body {
+  overflow-x: hidden;
   @apply bg-background text-primary;
   font-family: Arial, Helvetica, sans-serif;
 }

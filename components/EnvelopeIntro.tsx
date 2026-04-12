@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import Image from "next/image";
@@ -12,26 +12,50 @@ export default function EnvelopeIntro() {
 
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+  // 🔥 лёгкая вибрация во время тряски (создаёт напряжение)
+  const shakeVibration = () => {
+    if ("vibrate" in navigator) {
+      navigator.vibrate([20, 30, 20, 30, 30]);
+    }
+  };
+
+  // 💥 мощный взрыв + продолжение
+  const explosionVibration = () => {
+    if ("vibrate" in navigator) {
+      // сначала удар
+      navigator.vibrate([90, 40, 140, 40, 220]);
+
+      // потом "дождь конфетти"
+      setTimeout(() => {
+        navigator.vibrate([
+          40, 30, 60, 30, 80, 30,
+          100, 40, 120, 40, 150,
+        ]);
+      }, 250);
+    }
+  };
+
   const handleClick = async () => {
     if (stage !== "idle") return;
 
-    // 1. лёгкий haptic (первичный отклик)
-    if (navigator.vibrate) {
-      navigator.vibrate(40);
+    // первичный отклик
+    if ("vibrate" in navigator) {
+      navigator.vibrate(50);
     }
 
     setStage("shake");
+
+    // 🔥 добавляем вибрацию на shake
+    shakeVibration();
+
     await sleep(700);
 
-    // микро-пауза перед взрывом (делает эффект дороже)
     await sleep(80);
 
     setStage("explode");
 
-    // основной "взрыв"
     triggerExplosion();
 
-    // скролл чуть позже, чтобы не перебивал эффект
     setTimeout(() => {
       document.getElementById("content")?.scrollIntoView({
         behavior: "smooth",
@@ -43,36 +67,47 @@ export default function EnvelopeIntro() {
   };
 
   const triggerExplosion = () => {
-    // мощный haptic в момент взрыва
-    if (navigator.vibrate) {
-      navigator.vibrate([60, 30, 120]);
-    }
+    // 💥 новая усиленная вибрация
+    explosionVibration();
 
-    // основной конфетти (вперёд)
+    // основной конфетти
     confetti({
-      particleCount: 180,
-      spread: 100,
+      particleCount: 200,
+      spread: 110,
+      startVelocity: 45,
       origin: { y: 0.6 },
     });
 
-    // боковые "выстрелы" — ощущение, что рвётся из конверта
+    // боковые выстрелы
     confetti({
-      particleCount: 80,
+      particleCount: 100,
       angle: 60,
-      spread: 70,
+      spread: 75,
+      startVelocity: 50,
       origin: { x: 0 },
     });
 
     confetti({
-      particleCount: 80,
+      particleCount: 100,
       angle: 120,
-      spread: 70,
+      spread: 75,
+      startVelocity: 50,
       origin: { x: 1 },
     });
+
+    // 🎉 дополнительная "волна" через момент (делает эффект длиннее)
+    setTimeout(() => {
+      confetti({
+        particleCount: 80,
+        spread: 120,
+        startVelocity: 30,
+        origin: { y: 0.7 },
+      });
+    }, 250);
   };
 
   return (
-    <section className="h-screen flex items-center justify-center">
+    <section className="h-screen flex items-center justify-center overflow-hidden">
       <motion.div
         onClick={handleClick}
         className="cursor-pointer select-none"
