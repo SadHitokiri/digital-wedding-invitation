@@ -1,26 +1,53 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: #F8F6F2;
+  /* мягкий кремовый */
+  --color-primary: #5F6F5B;
+  /* спокойный зелёный */
+  --color-accent: #E6D3C3;
+  /* светлый беж */
+  --color-soft: #EFEAE4;
+  /* почти белый */
+  --color-muted: #A3B18A;
+  /* свежая зелень */
+  --color-secondary: #D6CCC2;
+  /* нейтральный беж */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  @apply bg-background text-primary;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+html, body {
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.gradient-bg {
+  background: linear-gradient(180deg, #F6F4EF 0%, #EDE7DC 100%);
+  background-size: 600% 600%;
+  animation: gradientMove 28s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 7% 0%;
+  }
+
+  50% {
+    background-position: 94% 100%;
+  }
+
+  100% {
+    background-position: 7% 0%;
+  }
 }
