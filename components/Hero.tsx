@@ -32,9 +32,9 @@ export default function Hero() {
       confettiInstance.current?.({
         particleCount: 4,
         angle: 60,
-        spread: 90,
+        spread: 120,
         startVelocity: 45,
-        gravity: 0.7,
+        gravity: 0.5,
         scalar: 1.2,
         origin: { x: 0 },
         colors,
@@ -43,9 +43,9 @@ export default function Hero() {
       confettiInstance.current?.({
         particleCount: 4,
         angle: 120,
-        spread: 90,
+        spread: 120,
         startVelocity: 45,
-        gravity: 0.7,
+        gravity: 0.5,
         scalar: 1.2,
         origin: { x: 1 },
         colors,

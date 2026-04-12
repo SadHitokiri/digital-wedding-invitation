@@ -1,36 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import Image from "next/image";
 
-export default function EnvelopeIntro() {
+export default function EnvelopeIntro({
+  onComplete,
+}: {
+  onComplete: () => void;
+}) {
   const [stage, setStage] = useState<"idle" | "shake" | "explode" | "done">(
     "idle",
   );
-
+  const [isLeaving, setIsLeaving] = useState(false);
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-  // 🔥 лёгкая вибрация во время тряски (создаёт напряжение)
+  // 🚫 блокируем скролл пока интро активно
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
+  // 🔥 вибрация тряски
   const shakeVibration = () => {
     if ("vibrate" in navigator) {
       navigator.vibrate([20, 30, 20, 30, 30]);
     }
   };
 
-  // 💥 мощный взрыв + продолжение
+  // 💥 вибрация взрыва + хвост
   const explosionVibration = () => {
     if ("vibrate" in navigator) {
-      // сначала удар
       navigator.vibrate([90, 40, 140, 40, 220]);
 
-      // потом "дождь конфетти"
       setTimeout(() => {
-        navigator.vibrate([
-          40, 30, 60, 30, 80, 30,
-          100, 40, 120, 40, 150,
-        ]);
+        navigator.vibrate([40, 30, 60, 30, 80, 30, 100, 40, 120, 40, 150]);
       }, 250);
     }
   };
@@ -44,33 +52,30 @@ export default function EnvelopeIntro() {
     }
 
     setStage("shake");
-
-    // 🔥 добавляем вибрацию на shake
     shakeVibration();
 
     await sleep(700);
-
     await sleep(80);
 
     setStage("explode");
-
     triggerExplosion();
 
-    setTimeout(() => {
-      document.getElementById("content")?.scrollIntoView({
-        behavior: "smooth",
-      });
-    }, 400);
+    await sleep(500);
+
+    setIsLeaving(true);
 
     await sleep(500);
-    setStage("done");
+
+    // 🔓 возвращаем скролл
+    document.body.style.overflow = "auto";
+
+    // 💥 говорим родителю "готово"
+    onComplete();
   };
 
   const triggerExplosion = () => {
-    // 💥 новая усиленная вибрация
     explosionVibration();
 
-    // основной конфетти
     confetti({
       particleCount: 200,
       spread: 110,
@@ -78,7 +83,6 @@ export default function EnvelopeIntro() {
       origin: { y: 0.6 },
     });
 
-    // боковые выстрелы
     confetti({
       particleCount: 100,
       angle: 60,
@@ -95,7 +99,6 @@ export default function EnvelopeIntro() {
       origin: { x: 1 },
     });
 
-    // 🎉 дополнительная "волна" через момент (делает эффект длиннее)
     setTimeout(() => {
       confetti({
         particleCount: 80,
@@ -107,7 +110,15 @@ export default function EnvelopeIntro() {
   };
 
   return (
-    <section className="h-screen flex items-center justify-center overflow-hidden">
+    <motion.section
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#F8F5F0]"
+      animate={
+        isLeaving
+          ? { opacity: 0, filter: "blur(8px)", y: -40 }
+          : { opacity: 1, filter: "blur(0px)", y: 0 }
+      }
+      transition={{ duration: 0.6, ease: "easeInOut" }}
+    >
       <motion.div
         onClick={handleClick}
         className="cursor-pointer select-none"
@@ -147,6 +158,6 @@ export default function EnvelopeIntro() {
           Нажми на меня
         </p>
       </motion.div>
-    </section>
+    </motion.section>
   );
 }
