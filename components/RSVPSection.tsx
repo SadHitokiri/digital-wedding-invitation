@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 
@@ -19,6 +19,7 @@ export default function RSVP() {
     surname: "",
     will_attend: true,
     alcohol: [] as string[],
+    allergies: "",
     comment: "",
   });
 
@@ -41,20 +42,14 @@ export default function RSVP() {
     try {
       setLoading(true);
 
-      const { error } = await supabase
-        .from("guests_response")
-        .insert([form]);
+      const { error } = await supabase.from("guests_response").insert([form]);
 
       if (error) throw error;
 
       setSuccess(true);
     } catch (err: any) {
-      console.error("SUPABASE ERROR:", err);
-
-      alert(
-        err.message ||
-          "Ошибка отправки 😢 Попробуй ещё раз или напиши нам",
-      );
+      console.error(err);
+      alert("Ошибка отправки 😢");
     } finally {
       setLoading(false);
     }
@@ -62,13 +57,18 @@ export default function RSVP() {
 
   const toggleAlcohol = (item: string) => {
     setForm((prev) => {
-      const exists = prev.alcohol.includes(item);
+      if (item === "Без алкоголя") {
+        return { ...prev, alcohol: ["Без алкоголя"] };
+      }
+
+      const filtered = prev.alcohol.filter((i) => i !== "Без алкоголя");
+      const exists = filtered.includes(item);
 
       return {
         ...prev,
         alcohol: exists
-          ? prev.alcohol.filter((i) => i !== item)
-          : [...prev.alcohol, item],
+          ? filtered.filter((i) => i !== item)
+          : [...filtered, item],
       };
     });
   };
@@ -104,7 +104,7 @@ export default function RSVP() {
                     setForm((prev) => ({ ...prev, will_attend: true }));
                     setStep(2);
                   }}
-                  className="px-6 py-3 rounded-full bg-neutral-900 text-white hover:opacity-90 transition pointer"
+                  className="px-6 py-3 rounded-full bg-neutral-900 text-white hover:opacity-90 transition cursor-pointer"
                 >
                   С радостью 💛
                 </button>
@@ -114,7 +114,7 @@ export default function RSVP() {
                     setForm((prev) => ({ ...prev, will_attend: false }));
                     setStep(2);
                   }}
-                  className="px-6 py-3 rounded-full bg-neutral-200 hover:bg-neutral-300 transition pointer"
+                  className="px-6 py-3 rounded-full bg-neutral-200 hover:bg-neutral-300 transition cursor-pointer"
                 >
                   К сожалению, нет
                 </button>
@@ -129,84 +129,162 @@ export default function RSVP() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="rounded-3xl bg-white/70 backdrop-blur-2xl border border-white/40 p-10 shadow-[0_10px_40px_rgba(0,0,0,0.08)] space-y-6"
+              className="rounded-3xl bg-white/70 backdrop-blur-2xl border border-white/40 p-10 shadow-[0_10px_40px_rgba(0,0,0,0.08)]"
             >
-              <h2 className="text-xl text-center">
-                {form.will_attend
-                  ? "Заполни, пожалуйста"
-                  : "Нам очень жаль 💔"}
-              </h2>
+              <div className="space-y-10">
+                {/* ❌ НЕ ПРИДУ */}
+                {!form.will_attend && (
+                  <>
+                    <div className="text-center space-y-2">
+                      <h2 className="text-xl">Нам очень жаль 💔</h2>
+                      <p className="text-neutral-500 text-sm">
+                        что тебя не будет с нами в этот день
+                      </p>
+                    </div>
 
-              <input
-                placeholder="Имя"
-                value={form.name}
-                onChange={(e) => updateField("name", e.target.value)}
-                className={`w-full p-4 rounded-xl bg-white/70 outline-none transition
-                ${errors.name ? "ring-2 ring-red-400" : "focus:ring-2 ring-neutral-300"}`}
-              />
+                    <div className="space-y-3">
+                      <input
+                        placeholder="Имя"
+                        value={form.name}
+                        onChange={(e) => updateField("name", e.target.value)}
+                        className={`w-full p-4 rounded-xl bg-white/70 outline-none transition
+              ${errors.name ? "ring-2 ring-red-400" : "focus:ring-2 ring-neutral-300"}`}
+                      />
 
-              <input
-                placeholder="Фамилия"
-                value={form.surname}
-                onChange={(e) => updateField("surname", e.target.value)}
-                className={`w-full p-4 rounded-xl bg-white/70 outline-none transition
-                ${errors.surname ? "ring-2 ring-red-400" : "focus:ring-2 ring-neutral-300"}`}
-              />
+                      <input
+                        placeholder="Фамилия"
+                        value={form.surname}
+                        onChange={(e) => updateField("surname", e.target.value)}
+                        className={`w-full p-4 rounded-xl bg-white/70 outline-none transition
+              ${errors.surname ? "ring-2 ring-red-400" : "focus:ring-2 ring-neutral-300"}`}
+                      />
+                    </div>
 
-              {form.will_attend && (
-                <>
-                  <div>
-                    <p className="mb-2 text-sm text-neutral-600">
-                      Предпочтения по алкоголю
+                    <button
+                      onClick={handleSubmit}
+                      disabled={loading || !isFormValid}
+                      className={`w-full py-4 rounded-full transition
+            ${
+              isFormValid
+                ? "bg-neutral-900 text-white hover:opacity-90"
+                : "bg-neutral-300 text-neutral-500 cursor-not-allowed"
+            }`}
+                    >
+                      {loading ? "Отправляем..." : "Отправить"}
+                    </button>
+
+                    <button
+                      onClick={() => setStep(1)}
+                      className="w-full py-3 rounded-full bg-neutral-200 hover:bg-neutral-300 transition text-sm cursor-pointer"
+                    >
+                      Может всё же получится 💛
+                    </button>
+                  </>
+                )}
+
+                {/* ✅ ПРИДУ */}
+                {form.will_attend && (
+                  <>
+                    {/* 👤 ИМЯ */}
+                    <div className="space-y-3">
+                      <input
+                        placeholder="Имя"
+                        value={form.name}
+                        onChange={(e) => updateField("name", e.target.value)}
+                        className={`w-full p-4 rounded-xl bg-white/70 outline-none transition
+              ${errors.name ? "ring-2 ring-red-400" : "focus:ring-2 ring-neutral-300"}`}
+                      />
+
+                      <input
+                        placeholder="Фамилия"
+                        value={form.surname}
+                        onChange={(e) => updateField("surname", e.target.value)}
+                        className={`w-full p-4 rounded-xl bg-white/70 outline-none transition
+              ${errors.surname ? "ring-2 ring-red-400" : "focus:ring-2 ring-neutral-300"}`}
+                      />
+                    </div>
+
+                    {/* 🍸 БАР */}
+                    <div className="space-y-4 text-center">
+                      <p className="text-sm text-neutral-500">
+                        Наш бармен уже готовит кое-что особенное 🍸
+                      </p>
+
+                      <p className="text-base">Что тебе ближе по настроению?</p>
+
+                      <div className="flex gap-3 flex-wrap justify-center pt-2">
+                        {[
+                          { title: "Лёгкие", emoji: "🍋" },
+                          { title: "Сладкие", emoji: "🍓" },
+                          { title: "Кислые", emoji: "🌿" },
+                          { title: "Крепкие", emoji: "🥃" },
+                          { title: "Без алкоголя", emoji: "🚫" },
+                        ].map((item) => {
+                          const label = item.title;
+                          const active = form.alcohol.includes(label);
+
+                          return (
+                            <motion.button
+                              key={label}
+                              type="button"
+                              onClick={() => toggleAlcohol(label)}
+                              whileHover={{ y: -3, scale: 1.03 }}
+                              whileTap={{ scale: 0.97 }}
+                              className={`px-4 py-2 rounded-full text-sm border cursor-pointer
+                    ${
+                      active
+                        ? "bg-neutral-900 text-white"
+                        : "bg-white/60 hover:bg-white/80"
+                    }`}
+                            >
+                              {item.emoji} {item.title}
+                            </motion.button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* 🥗 ДОП */}
+                    <div className="space-y-4">
+                      <input
+                        placeholder="Аллергии или ограничения"
+                        value={form.allergies}
+                        onChange={(e) =>
+                          updateField("allergies", e.target.value)
+                        }
+                        className="w-full p-4 rounded-xl bg-white/70 outline-none focus:ring-2 ring-neutral-300 transition"
+                      />
+
+                      <textarea
+                        placeholder="Комментарий (по желанию)"
+                        value={form.comment}
+                        onChange={(e) => updateField("comment", e.target.value)}
+                        className="w-full p-4 min-h-24 rounded-xl bg-white/70 outline-none focus:ring-2 ring-neutral-300 transition"
+                      />
+                    </div>
+
+                    {/* 🌙 НОЧЬ */}
+                    <p className="text-xs text-neutral-400 text-center leading-relaxed">
+                      🏡 Возможность остаться на ночь есть. Мы поможем с
+                      бронированием, оплата — самостоятельно
                     </p>
 
-                    <div className="flex gap-3 flex-wrap">
-                      {[
-                        "Вино",
-                        "Шампанское",
-                        "Ром",
-                        "Виски",
-                        "Джин",
-                        "Водка",
-                        "Не пью",
-                      ].map((item) => (
-                        <button
-                          key={item}
-                          onClick={() => toggleAlcohol(item)}
-                          className={`px-4 py-2 rounded-full border transition
-                          ${
-                            form.alcohol.includes(item)
-                              ? "bg-neutral-900 text-white"
-                              : "bg-white/60"
-                          }`}
-                        >
-                          {item}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <textarea
-                    placeholder="Комментарий (по желанию) - можно указать предпочтения по вину 🍷"
-                    value={form.comment}
-                    onChange={(e) => updateField("comment", e.target.value)}
-                    className="w-full p-4 min-h-30 rounded-xl bg-white/70 outline-none focus:ring-2 ring-neutral-300 transition"
-                  />
-                </>
-              )}
-
-              <button
-                onClick={handleSubmit}
-                disabled={loading || !isFormValid}
-                className={`w-full py-4 rounded-full transition
-                ${
-                  isFormValid
-                    ? "bg-neutral-900 text-white hover:opacity-90"
-                    : "bg-neutral-300 text-neutral-500 cursor-not-allowed"
-                }`}
-              >
-                {loading ? "Отправляем..." : "Отправить"}
-              </button>
+                    {/* КНОПКА */}
+                    <button
+                      onClick={handleSubmit}
+                      disabled={loading || !isFormValid}
+                      className={`w-full py-4 rounded-full transition
+            ${
+              isFormValid
+                ? "bg-neutral-900 text-white hover:opacity-90"
+                : "bg-neutral-300 text-neutral-500 cursor-not-allowed"
+            }`}
+                    >
+                      {loading ? "Отправляем..." : "Отправить"}
+                    </button>
+                  </>
+                )}
+              </div>
             </motion.div>
           )}
 

@@ -13,8 +13,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "D&V Wedding Invite",
-  description: "Veronika & Dmitry - wedding invitation website",
+  title: "V&D Wedding Invite",
+  description: "Veronika & Dmitry - Digital Wedding Invitation",
+  openGraph: {
+    title: "Приглашение на свадьбу Вероники и Дмитрия",
+    description: "Мы будем рады видеть вас на нашем празднике!",
+    images: [
+      {
+        url: "/preview.jpg"
+      }
+    ]
+  }
 };
 
 export default function RootLayout({

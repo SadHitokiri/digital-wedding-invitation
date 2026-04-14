@@ -119,7 +119,7 @@ export default function Hero() {
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
+        transition={{ delay: 2, duration: 1 }}
         className="text-5xl md:text-6xl font-serif mb-6 z-10"
         onAnimationStart={fireConfetti}
       >
@@ -130,7 +130,7 @@ export default function Hero() {
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 1 }}
+        transition={{ delay: 3, duration: 1 }}
         className="text-2xl md:text-3xl mb-4 tracking-wide z-10"
       >
         Мы женимся
@@ -140,29 +140,29 @@ export default function Hero() {
       <motion.div
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
-        transition={{ delay: 0.6, duration: 0.8 }}
+        transition={{ delay: 4, duration: 1 }}
         className="h-px w-24 bg-[#5A4634] mx-auto mb-6 z-10"
       />
+
+      {/* 📅 дата */}
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 5, duration: 1 }}
+        className="text-2xl tracking-widest text-[#5A4634] z-20"
+      >
+        15 · 08 · 2026
+      </motion.h2>
 
       {/* текст */}
       <motion.p
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.9, duration: 1 }}
-        className="text-lg opacity-80 z-10"
+        transition={{ delay: 5, duration: 1 }}
+        className="mt-8 text-lg opacity-80 z-10"
       >
         И приглашаем вас разделить этот день
       </motion.p>
-
-      {/* 📅 дата В САМОМ НИЗУ */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.6, duration: 0.8 }}
-        className="mt-8 text-sm tracking-widest text-[#5A4634]/70 z-20"
-      >
-        15 · 08 · 2026
-      </motion.div>
     </section>
   );
 }

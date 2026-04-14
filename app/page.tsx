@@ -4,6 +4,7 @@ import { useState } from "react";
 import EnvelopeIntro from "@/components/EnvelopeIntro";
 import Hero from "@/components/Hero";
 import Location from "@/components/Location";
+import Timing from "@/components/Timing";
 import DressColor from "@/components/DressColors";
 import Countdown from "@/components/Countdown";
 import RSVPSection from "@/components/RSVPSection";
@@ -40,6 +41,7 @@ export default function Home() {
               <Location />
             </section>
           </div>
+          <Timing />
 
           <DressColor />
           <Rules />
