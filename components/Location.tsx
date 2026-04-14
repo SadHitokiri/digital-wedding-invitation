@@ -5,30 +5,47 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Location() {
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 60]); 
+  const y = useTransform(scrollY, [0, 500], [0, 60]);
 
   const addToCalendar = () => {
-  const start = "20260815T130000Z";
-  const end = "20260815T210000Z";
+    const start = "20260815T130000Z";
+    const end = "20260815T210000Z";
 
-  const title = encodeURIComponent("Свадьба Вероники и Дмитрия");
-  const details = encodeURIComponent(
-    "Будем рады видеть вас на нашей свадьбе!",
-  );
-  const location = encodeURIComponent("Alberta muiža");
+    const title = encodeURIComponent("Свадьба Вероники и Дмитрия");
+    const details = encodeURIComponent(
+      "Будем рады видеть вас на нашей свадьбе!",
+    );
+    const location = encodeURIComponent("Alberta muiža");
 
-  const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
+    const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
 
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-  if (isIOS) {
-    // iPhone → fallback на .ics
-    window.location.href = "/wedding.ics";
-  } else {
-    // Android / Desktop → открываем Google Calendar
-    window.open(googleUrl, "_blank");
-  }
-};
+    if (isIOS) {
+      // iPhone → fallback на .ics
+      window.location.href = "/wedding.ics";
+    } else {
+      // Android / Desktop → открываем Google Calendar
+      window.open(googleUrl, "_blank");
+    }
+  };
+
+  const openMap = () => {
+    const location = encodeURIComponent("Alberta muiža");
+
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    if (isIOS) {
+      // 🍏 Apple Maps
+      window.location.href = `https://maps.apple.com/?q=${location}`;
+    } else {
+      // 🤖 Google Maps
+      window.open(
+        `https://www.google.com/maps/search/?api=1&query=${location}`,
+        "_blank",
+      );
+    }
+  };
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -90,14 +107,12 @@ export default function Location() {
           transition={{ duration: 1 }}
           className="flex flex-col md:flex-row gap-4 justify-center items-center mb-10"
         >
-          <a
-            href="https://www.google.com/maps/search/?api=1&query=Alberta+muiža"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={openMap}
             className="px-7 py-3 rounded-full bg-white text-black text-sm md:text-base hover:scale-105 active:scale-95 transition"
           >
             Открыть карту 📍
-          </a>
+          </button>
 
           <a
             onClick={addToCalendar}

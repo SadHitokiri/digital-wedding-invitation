@@ -148,7 +148,8 @@ export default function EnvelopeIntro({
           <Image
             src="/envelope.svg"
             alt="envelope"
-            fill
+            width={256}
+            height={160}
             className="object-cover pointer-events-none"
             priority
           />

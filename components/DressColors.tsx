@@ -10,26 +10,46 @@ export default function DressColors() {
     description: string;
   } | null>(null);
   const colors = [
+    // 🤍 СВЕТЛЫЕ / БАЗА
     {
       name: "Champagne Nude",
       hex: "#E8D5C4",
       description: "Лёгкий и нежный оттенок - идеально для воздушных образов",
     },
     {
+      name: "Muted Sand",
+      hex: "#D8C3A5",
+      description: "Спокойный песочный оттенок с мягким теплом",
+    },
+    {
       name: "Sand Beige",
       hex: "#CFC3AF",
       description: "Тёплая база, которая подойдёт практически каждому",
     },
+
+    // 🌾 НЕЙТРАЛЬНЫЕ / ТЁПЛЫЕ
     {
       name: "Warm Taupe",
       hex: "#B8A89A",
       description: "Сдержанный и элегантный - для спокойного образа",
     },
     {
+      name: "Camel",
+      hex: "#C19A6B",
+      description: "Мягкий и универсальный тёплый оттенок",
+    },
+    {
       name: "Clay Rose",
       hex: "#B68A6E",
       description: "Мягкий розово-глиняный оттенок с характером",
     },
+    {
+      name: "Terracotta",
+      hex: "#A0522D",
+      description: "Тёплый и выразительный акцент",
+    },
+
+    // 🍫 КОРИЧНЕВЫЕ / ГЛУБИНА
     {
       name: "Cocoa",
       hex: "#8B5E3C",
@@ -45,16 +65,8 @@ export default function DressColors() {
       hex: "#3E2723",
       description: "Максимально глубокий и вечерний оттенок",
     },
-    {
-      name: "Olive Light",
-      hex: "#B5B35C",
-      description: "Свежий природный оттенок с лёгкостью",
-    },
-    {
-      name: "Moss Green",
-      hex: "#8A9A3A",
-      description: "Живой и естественный - как летний сад",
-    },
+
+    // 🌿 ЗЕЛЁНЫЕ (от светлого к тёмному)
     {
       name: "Mustard Gold",
       hex: "#A88B00",
@@ -66,14 +78,20 @@ export default function DressColors() {
       description: "Спокойный и благородный зелёный",
     },
     {
-      name: "Camel",
-      hex: "#C19A6B",
-      description: "Мягкий и универсальный тёплый оттенок",
+      name: "Dusty Olive",
+      hex: "#7A8450",
+      description:
+        "Приглушённый оливковый с мягкой глубиной — идеально в общей гамме",
     },
     {
-      name: "Terracotta",
-      hex: "#A0522D",
-      description: "Тёплый и выразительный акцент",
+      name: "Deep Olive",
+      hex: "#5E6B3C",
+      description: "Более насыщенный оливковый для глубины палитры",
+    },
+    {
+      name: "Moss Green",
+      hex: "#8A9A3A",
+      description: "Живой и естественный - как летний сад",
     },
     {
       name: "Forest Green",
@@ -100,25 +118,25 @@ export default function DressColors() {
         {colors.map((color) => {
           const isActive = active?.name === color.name;
           return (
-  <motion.div
-    key={color.name}
-    whileHover={{ scale: 1.08 }}
-    whileTap={{ scale: 0.95 }}
-    onClick={() => {
-      if (navigator.vibrate) {
-        navigator.vibrate(isActive ? 10 : 25);
-      }
-      setActive(isActive ? null : color);
-    }}
-    className="h-20 rounded-2xl cursor-pointer relative"
-    style={{ backgroundColor: color.hex }}
-    animate={{
-      scale: isActive ? 1.12 : 1,
-      boxShadow: isActive
-        ? "0 0 0 2px white, 0 10px 30px rgba(0,0,0,0.2)"
-        : "0 2px 8px rgba(0,0,0,0.05)",
-    }}
-  />
+            <motion.div
+              key={color.name}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                if (navigator.vibrate) {
+                  navigator.vibrate(isActive ? 10 : 25);
+                }
+                setActive(isActive ? null : color);
+              }}
+              className="h-20 rounded-2xl cursor-pointer relative"
+              style={{ backgroundColor: color.hex }}
+              animate={{
+                scale: isActive ? 1.12 : 1,
+                boxShadow: isActive
+                  ? "0 0 0 2px white, 0 10px 30px rgba(0,0,0,0.2)"
+                  : "0 2px 8px rgba(0,0,0,0.05)",
+              }}
+            />
           );
         })}
       </div>
