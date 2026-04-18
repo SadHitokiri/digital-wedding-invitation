@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "V&D Wedding Invite",
-  description: "Veronika & Dmitry - Digital Wedding Invitation",
+  description: "Veronika & Dmitrijs - Digital Wedding Invitation",
   openGraph: {
     title: "Приглашение на свадьбу Вероники и Дмитрия",
     description: "Мы будем рады видеть вас на нашем празднике!",
