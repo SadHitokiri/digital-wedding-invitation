@@ -168,7 +168,7 @@ export default function DressColors() {
       </p>
 
       <p className="mt-4 text-sm text-neutral-400 italic">
-        Каждый оттенок - часть атмосферы этого дня ✨
+        Каждый оттенок - часть атмосферы этого дня
       </p>
     </section>
   );

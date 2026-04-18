@@ -73,14 +73,7 @@ export default function Location() {
 
       {/* Контент */}
       <div className="relative z-10 h-full flex flex-col justify-between p-15 text-white">
-        {/* Дата */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mt-10"
-        ></motion.div>
-
+       <h1 className="text-center text-3xl mt-5 font-light">Где? Когда?</h1>
         {/* Место */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -97,7 +90,7 @@ export default function Location() {
             </h2>
           </div>
 
-          <p className="text-lg md:text-xl opacity-80">Начало в 16:00</p>
+          <p className="text-sm md:text-base opacity-80">Mārupe, Mārupe pilsēta, Mārupes novads</p>
         </motion.div>
 
         {/* Кнопки */}

@@ -26,7 +26,7 @@ export default function Timing() {
     <section className="px-6 text-center max-w-4xl mx-auto">
       <div className="max-w-3xl mx-auto">
         {/* Заголовок */}
-        <h2 className="py-5 text-4xl mb-6 font-light">Тайминг дня</h2>
+        <h2 className="py-5 text-4xl mb-6 font-light">Программа дня</h2>
 
         {/* Линия + события */}
         <div className="relative">

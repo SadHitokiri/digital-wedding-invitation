@@ -81,8 +81,10 @@ export default function RSVP() {
     }
   };
 
+  const isCocktailsSelected = form.alcohol.includes("Коктейли");
+
   return (
-    <section className="relative py-32 px-6 flex justify-center">
+    <section className="relative py-10 px-6 flex justify-center">
       <div className="w-full max-w-xl">
         <AnimatePresence mode="wait">
           {/* STEP 1 */}
@@ -175,7 +177,7 @@ export default function RSVP() {
 
                     <button
                       onClick={() => setStep(1)}
-                      className="w-full py-3 rounded-full bg-neutral-200 hover:bg-neutral-300 transition text-sm cursor-pointer"
+                      className="w-full py-3 rounded-full bg-neutral-200 hover:bg-neutral-200 transition text-sm cursor-pointer"
                     >
                       Может всё же получится 💛
                     </button>
@@ -186,7 +188,7 @@ export default function RSVP() {
                 {form.will_attend && (
                   <>
                     {/* 👤 ИМЯ */}
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       <input
                         placeholder="Имя"
                         value={form.name}
@@ -206,67 +208,115 @@ export default function RSVP() {
 
                     {/* 🍸 БАР */}
                     <div className="space-y-4 text-center">
-                      <p className="text-sm text-neutral-500">
-                        Наш бармен уже готовит кое-что особенное 🍸
+                      <p className="text-base">Что тебе ближе по настроению?</p>
+                      <p className="text-xs">
+                        Можно выбрать несколько вариантов
                       </p>
 
-                      <p className="text-base">Что тебе ближе по настроению?</p>
+                      <div className="flex flex-col items-center gap-4 pt-2">
+                        {/* ОСНОВНЫЕ */}
+                        <div className="flex gap-3 flex-wrap justify-center">
+                          {[
+                            { title: "Вино", emoji: "🍷" },
+                            { title: "Шампанское", emoji: "🍾" },
+                            { title: "Коктейли", emoji: "🍸" },
+                            { title: "Без алкоголя", emoji: "🚫" },
+                          ].map((item) => {
+                            const label = item.title;
+                            const active = form.alcohol.includes(label);
 
-                      <div className="flex gap-3 flex-wrap justify-center pt-2">
-                        {[
-                          { title: "Лёгкие", emoji: "🍋" },
-                          { title: "Сладкие", emoji: "🍓" },
-                          { title: "Кислые", emoji: "🌿" },
-                          { title: "Крепкие", emoji: "🥃" },
-                          { title: "Без алкоголя", emoji: "🚫" },
-                        ].map((item) => {
-                          const label = item.title;
-                          const active = form.alcohol.includes(label);
+                            return (
+                              <motion.button
+                                key={label}
+                                type="button"
+                                onClick={() => toggleAlcohol(label)}
+                                whileHover={{ y: -3, scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
+                                className={`px-4 py-2 rounded-full text-sm border cursor-pointer
+          ${
+            active
+              ? "bg-neutral-900 text-white shadow-md"
+              : "bg-white/60 hover:bg-white/80"
+          }`}
+                              >
+                                {item.emoji} {item.title}
+                              </motion.button>
+                            );
+                          })}
+                        </div>
 
-                          return (
-                            <motion.button
-                              key={label}
-                              type="button"
-                              onClick={() => toggleAlcohol(label)}
-                              whileHover={{ y: -3, scale: 1.03 }}
-                              whileTap={{ scale: 0.97 }}
-                              className={`px-4 py-2 rounded-full text-sm border cursor-pointer
-                    ${
-                      active
-                        ? "bg-neutral-900 text-white"
-                        : "bg-white/60 hover:bg-white/80"
-                    }`}
+                        {/* ПОДКАТЕГОРИИ КОКТЕЙЛЕЙ */}
+                        <AnimatePresence>
+                          {isCocktailsSelected && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -5 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -5 }}
+                              className="flex gap-2 flex-wrap justify-center"
                             >
-                              {item.emoji} {item.title}
-                            </motion.button>
-                          );
-                        })}
+                              {[
+                                { title: "Лёгкие", emoji: "🎈" },
+                                { title: "Сладкие", emoji: "🍓" },
+                                { title: "Кислые", emoji: "🍋" },
+                                { title: "Крепкие", emoji: "💪🏼" },
+                              ].map((item) => {
+                                const label = item.title;
+                                const active = form.alcohol.includes(label);
+
+                                return (
+                                  <motion.button
+                                    key={label}
+                                    type="button"
+                                    onClick={() => toggleAlcohol(label)}
+                                    whileHover={{ y: -2 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    className={`px-3 py-1.5 rounded-full text-xs border cursor-pointer
+              ${
+                active
+                  ? "bg-neutral-800 text-white"
+                  : "bg-white/50 hover:bg-white/70"
+              }`}
+                                  >
+                                    {item.emoji} {item.title}
+                                  </motion.button>
+                                );
+                              })}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </div>
 
                     {/* 🥗 ДОП */}
                     <div className="space-y-4">
+                      <p className="space-y-4 text-center">
+                        Вопрос по поводу аллергий и ограничений
+                      </p>
                       <input
-                        placeholder="Аллергии или ограничения"
+                        placeholder="Если нет, оставь поле пустым"
                         value={form.allergies}
                         onChange={(e) =>
                           updateField("allergies", e.target.value)
                         }
                         className="w-full p-4 rounded-xl bg-white/70 outline-none focus:ring-2 ring-neutral-300 transition"
                       />
-
-                      <textarea
-                        placeholder="Комментарий (по желанию)"
-                        value={form.comment}
-                        onChange={(e) => updateField("comment", e.target.value)}
-                        className="w-full p-4 min-h-24 rounded-xl bg-white/70 outline-none focus:ring-2 ring-neutral-300 transition"
-                      />
+                      <div className="space-y-4">
+                        <textarea
+                          placeholder="Комментарий (по желанию)"
+                          value={form.comment}
+                          onChange={(e) =>
+                            updateField("comment", e.target.value)
+                          }
+                          className="w-full p-4 min-h-24 rounded-xl bg-white/70 outline-none focus:ring-2 ring-neutral-300 transition"
+                        />
+                      </div>
                     </div>
 
                     {/* 🌙 НОЧЬ */}
                     <p className="text-xs text-neutral-400 text-center leading-relaxed">
-                      🏡 Возможность остаться на ночь есть. Мы поможем с
-                      бронированием, оплата — самостоятельно
+                      🏡 P.S. В крайнем случае есть возможность остаться на ночь
+                      на территории. Мы поможем с бронированием. Оплата -
+                      самостоятельно.
                     </p>
 
                     {/* КНОПКА */}
@@ -294,17 +344,32 @@ export default function RSVP() {
               key="success"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="rounded-3xl bg-white/60 backdrop-blur-xl p-10 text-center space-y-6"
+              className="rounded-3xl bg-white/60 backdrop-blur-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.1)]"
             >
-              <h2 className="text-2xl">
-                {form.will_attend ? "Спасибо 💛" : "Очень жаль 💔"}
-              </h2>
+              {/* 📸 ФОТО ТОЛЬКО ЕСЛИ ПРИДЁТ */}
+              {form.will_attend && (
+                <div className="relative h-48 w-full overflow-hidden">
+                  <img
+                    src="/photo-happy.jpg"
+                    alt="Veronika & Dmitrijs"
+                    className="w-full h-full object-cover object-[center_70%] scale-100"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                </div>
+              )}
 
-              <p className="text-neutral-600">
-                {form.will_attend
-                  ? "Будем рады видеть тебя"
-                  : "Спасибо, что сообщил(а)"}
-              </p>
+              {/* ✉️ КОНТЕНТ */}
+              <div className="p-8 text-center space-y-4">
+                <h2 className="text-2xl">
+                  {form.will_attend ? "Спасибо 💛" : "Очень жаль 💔"}
+                </h2>
+
+                <p className="text-neutral-600">
+                  {form.will_attend
+                    ? "Будем рады создать незабываемые воспоминания вместе с вами!"
+                    : "Спасибо, что сообщили"}
+                </p>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

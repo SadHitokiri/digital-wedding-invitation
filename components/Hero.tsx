@@ -127,41 +127,49 @@ export default function Hero() {
       </motion.h1>
 
       {/* ✨ подзаголовок */}
-      <motion.h2
+      <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 3, duration: 1 }}
-        className="text-2xl md:text-3xl mb-4 tracking-wide z-10"
+        className="text-3xl md:text-3xl mb-4 tracking-wide z-10"
       >
-        Мы женимся
-      </motion.h2>
+        Мы женимся!
+      </motion.h1>
 
       {/* линия */}
       <motion.div
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         transition={{ delay: 4, duration: 1 }}
-        className="h-px w-24 bg-[#5A4634] mx-auto mb-6 z-10"
+        className="h-px w-24 bg-[#5A4634] mx-auto z-10"
       />
 
       {/* 📅 дата */}
-      <motion.h2
+      <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 5, duration: 1 }}
-        className="text-2xl tracking-widest text-[#5A4634] z-20"
+        className="text-3xl tracking-widest text-[#5A4634] z-20"
       >
         15 · 08 · 2026
-      </motion.h2>
+      </motion.h1>
 
       {/* текст */}
       <motion.p
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ delay: 5, duration: 1 }}
-        className="mt-8 text-lg opacity-80 z-10"
+        className="mt-8 w-70 text-m opacity-80 z-10"
       >
-        И приглашаем вас разделить этот день
+        Совсем скоро у нас состоиться особенный день - наша свадьба!
+      </motion.p>
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 5, duration: 1 }}
+        className="text-m w-70 opacity-80 z-10"
+      >
+        И мы приглашаем Вас разделить этот день с нами.
       </motion.p>
     </section>
   );
