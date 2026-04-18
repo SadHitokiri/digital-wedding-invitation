@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useRef, useEffect } from "react";
+import { useInView } from "framer-motion";
 import confetti from "canvas-confetti";
 import HeartLine from "./HeartLine";
 
@@ -9,6 +10,8 @@ export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const confettiInstance = useRef<any>(null);
   const isConfettiFired = useRef(false);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true });
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -18,6 +21,14 @@ export default function Hero() {
       useWorker: true,
     });
   }, []);
+
+  useEffect(() => {
+  if (isInView) {
+    setTimeout(() => {
+      fireConfetti();
+    }, 800);
+  }
+}, [isInView]);
 
   const fireConfetti = () => {
     if (isConfettiFired.current) return;
@@ -60,7 +71,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden text-[#5A4634]">
+    <section ref={sectionRef} className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden text-[#5A4634]">
       {/* 🎉 canvas */}
       <canvas
         ref={canvasRef}
@@ -119,9 +130,8 @@ export default function Hero() {
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2, duration: 1 }}
+        transition={{ delay: 1, duration: 1 }}
         className="text-5xl md:text-6xl font-serif mb-6 z-10"
-        onAnimationStart={fireConfetti}
       >
         Вероника & Дмитрий
       </motion.h1>
@@ -130,7 +140,7 @@ export default function Hero() {
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 3, duration: 1 }}
+        transition={{ delay: 2, duration: 1 }}
         className="text-3xl md:text-3xl mb-4 tracking-wide z-10"
       >
         Мы женимся!
@@ -140,7 +150,7 @@ export default function Hero() {
       <motion.div
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
-        transition={{ delay: 4, duration: 1 }}
+        transition={{ delay: 2.2, duration: 1 }}
         className="h-px w-24 bg-[#5A4634] mx-auto z-10"
       />
 
@@ -148,7 +158,7 @@ export default function Hero() {
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 5, duration: 1 }}
+        transition={{ delay: 3, duration: 1 }}
         className="text-3xl tracking-widest text-[#5A4634] z-20"
       >
         15 · 08 · 2026
@@ -158,15 +168,15 @@ export default function Hero() {
       <motion.p
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ delay: 5, duration: 1 }}
+        transition={{ delay: 3.2, duration: 1 }}
         className="mt-8 w-70 text-m opacity-80 z-10"
       >
-        Совсем скоро у нас состоиться особенный день - наша свадьба!
+        Совсем скоро состоится особенный день - наша свадьба!
       </motion.p>
       <motion.p
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ delay: 5, duration: 1 }}
+        transition={{ delay: 3.2, duration: 1 }}
         className="text-m w-70 opacity-80 z-10"
       >
         И мы приглашаем Вас разделить этот день с нами.
