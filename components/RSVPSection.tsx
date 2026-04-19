@@ -293,7 +293,7 @@ export default function RSVP() {
                         Вопрос по поводу аллергий и ограничений
                       </p>
                       <input
-                        placeholder="Если нет, оставь поле пустым"
+                        placeholder="Если нет - оставь пустым"
                         value={form.allergies}
                         onChange={(e) =>
                           updateField("allergies", e.target.value)
