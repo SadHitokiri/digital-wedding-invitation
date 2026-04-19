@@ -352,7 +352,7 @@ export default function RSVP() {
                   <img
                     src="/photo-happy.jpg"
                     alt="Veronika & Dmitrijs"
-                    className="w-full h-full object-cover scale-200 object-[center_70%] md:scale-180 md:object-[center_45%]"
+                    className="w-full h-full object-cover object-[center_10%]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
