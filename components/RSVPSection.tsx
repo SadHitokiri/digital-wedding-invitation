@@ -217,10 +217,10 @@ export default function RSVP() {
                         {/* ОСНОВНЫЕ */}
                         <div className="flex gap-3 flex-wrap justify-center">
                           {[
+                            { title: "Без алкоголя", emoji: "🚫" },
                             { title: "Вино", emoji: "🍷" },
                             { title: "Шампанское", emoji: "🍾" },
                             { title: "Коктейли", emoji: "🍸" },
-                            { title: "Без алкоголя", emoji: "🚫" },
                           ].map((item) => {
                             const label = item.title;
                             const active = form.alcohol.includes(label);
