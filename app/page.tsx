@@ -35,8 +35,28 @@ export default function Home() {
           <div className="snap-y snap-mandatory">
             <section id="hero" className="h-screen snap-start">
               <Hero />
-            </section>
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                <span className="text-green-950/40 text-xs tracking-[0.3em] mb-3">
+                  ЛИСТАЙ ВНИЗ
+                </span>
 
+                <div className="animate-bounce">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#032e15"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="opacity-60"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </div>
+              </div>
+            </section>
             <section className="h-screen snap-start">
               <Location />
             </section>
