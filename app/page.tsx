@@ -35,7 +35,7 @@ export default function Home() {
           <div className="snap-y snap-mandatory">
             <section id="hero" className="h-screen snap-start">
               <Hero />
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center">
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
                 <span className="text-green-950/40 text-xs tracking-[0.3em] mb-3">
                   ЛИСТАЙ ВНИЗ
                 </span>
