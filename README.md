@@ -1,4 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Project Overview
+
+This is a real-world digital wedding invitation that I built and used for my own wedding.
+
+The website provided guests with all the essential information about the event, including the date, location, schedule, dress code, drinks, and other important details. At the end of the invitation, guests could submit an RSVP form with their attendance and additional information.
+
+### How it worked
+
+* **Next.js + React + TypeScript** — application architecture, components and UI
+* **Tailwind CSS** — styling and responsive design
+* **Framer Motion** — interactive UI animations and page transitions
+* **Canvas Confetti** — interactive confetti effects triggered by user actions
+* **Supabase** — database for storing RSVP responses
+* **Vercel** — deployment and hosting
+* **Custom domain** — publicly accessible wedding invitation
+* **Google Sheets + Google Apps Script** — periodically checked the Supabase API for new responses and synchronized them into a spreadsheet
+* **Statistics** — processed RSVP data was used to track guest preferences and improve wedding budget calculations
+
+### Development Tools
+
+* **OpenAI Codex** — used as an AI coding assistant throughout the development process for implementation, debugging, refactoring and exploring technical solutions
+
+The project was built as a real production website rather than a demo or portfolio mockup. It was deployed and actively used by wedding guests to receive information and submit their responses.
+
+### Key Features
+
+* Interactive envelope opening animation
+* Animated transitions and interactive UI elements
+* Responsive design optimized for mobile devices
+* Wedding information and event details
+* RSVP form with guest preferences and additional information
+* Persistent RSVP data stored in Supabase
+* Automated synchronization with Google Sheets
+* Guest response statistics for planning and budget estimation
 
 ## Getting Started
 
